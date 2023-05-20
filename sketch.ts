@@ -98,6 +98,7 @@ class Blob {
 
 const sketch = (p: p5) => {
     const blobs: Blob[] = []
+    const trace: BlobTrace[] = []
 
     p.setup = () => {
         p.createCanvas(400, 400)
@@ -110,8 +111,13 @@ const sketch = (p: p5) => {
     p.draw = () => {
         p.background(200)
         blobs.forEach((blob) => {
+            trace.push(new BlobTrace(blob.x, blob.y))
             blob.move(p)
             blob.draw(p)
+        })
+        trace.forEach((t) => {
+            t.fade(p)
+            t.draw(p)
         })
     }
 }

@@ -9,6 +9,7 @@ class BlobTrace {
     y: number // y座標
     wet: number // 痕跡の残り具合
     delta: number // 痕跡の減少率
+    color: p5.Color // 痕跡の色
 
     /*
      * BlobTraceクラスのコンストラクタ
@@ -18,11 +19,12 @@ class BlobTrace {
      *
      * @return BlobTrace
      */
-    constructor(x: number, y: number, wet = 10) {
+    constructor(p: p5, x: number, y: number, wet = 10) {
         this.x = x
         this.y = y
         this.wet = wet
         this.delta = 0.1
+        this.color = p.color(255, 255, 0)
     }
 
     /*
@@ -38,7 +40,13 @@ class BlobTrace {
      * @param p p5インスタンス
      */
     draw(p: p5) {
-        p.fill(0, 0, 0, this.wet)
+        this.color = p.color(
+            p.red(this.color),
+            p.green(this.color),
+            p.blue(this.color),
+            this.wet
+        )
+        p.fill(this.color)
         p.ellipse(this.x, this.y, 10, 10)
     }
 }
@@ -53,6 +61,7 @@ class Blob {
     vx: number // x方向の速度
     vy: number // y方向の速度
     radius: number // 半径
+    color: p5.Color // 色
 
     /*
      * Blobクラスのコンストラクタ
@@ -62,12 +71,13 @@ class Blob {
      *
      * @return Blob
      */
-    constructor(x: number, y: number) {
+    constructor(p: p5, x: number, y: number) {
         this.x = x
         this.y = y
         this.radius = 10
         this.vx = 1
         this.vy = 1
+        this.color = p.color(255, 255, 0)
     }
 
     /*
@@ -76,6 +86,7 @@ class Blob {
      * @param p p5インスタンス
      */
     draw(p: p5) {
+        p.fill(this.color)
         p.ellipse(this.x, this.y, this.radius, this.radius)
     }
 
@@ -105,14 +116,14 @@ const sketch = (p: p5) => {
         p.createCanvas(400, 400)
         let i: number
         for (i = 0; i < 10; i++) {
-            blobs.push(new Blob(p.random(p.width), p.random(p.height)))
+            blobs.push(new Blob(p, p.random(p.width), p.random(p.height)))
         }
     }
 
     p.draw = () => {
         p.background(200)
         blobs.forEach((blob) => {
-            trace.push(new BlobTrace(blob.x, blob.y))
+            trace.push(new BlobTrace(p, blob.x, blob.y))
             blob.move(p)
             blob.draw(p)
         })

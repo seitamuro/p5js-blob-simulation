@@ -1,6 +1,49 @@
 import p5 from 'p5'
 
 /*
+ * BlobTraceクラス
+ * モジホコリカビの痕跡
+ * */
+class BlobTrace {
+    x: number // x座標
+    y: number // y座標
+    wet: number // 痕跡の残り具合
+    delta: number // 痕跡の減少率
+
+    /*
+     * BlobTraceクラスのコンストラクタ
+     * @param x x座標
+     * @param y y座標
+     * @param wet 痕跡の残り具合
+     *
+     * @return BlobTrace
+     */
+    constructor(x: number, y: number, wet = 10) {
+        this.x = x
+        this.y = y
+        this.wet = wet
+        this.delta = 0.1
+    }
+
+    /*
+     * 時間経過による痕跡の減少
+     * @param p p5インスタンス
+     */
+    fade(p: p5) {
+        this.wet -= this.delta
+    }
+
+    /*
+     * 描画する
+     * @param p p5インスタンス
+     */
+    draw(p: p5) {
+        p.fill(0, 0, 0, this.wet)
+        p.ellipse(this.x, this.y, 10, 10)
+    }
+}
+
+/*
  * Blobクラス
  * モジホコリカビ本体の動き
  */

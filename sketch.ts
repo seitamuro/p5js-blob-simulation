@@ -101,6 +101,7 @@ const sketch = (p: p5) => {
     const trace: BlobTrace[] = []
 
     p.setup = () => {
+        p.noStroke()
         p.createCanvas(400, 400)
         let i: number
         for (i = 0; i < 10; i++) {
